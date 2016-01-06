@@ -16,22 +16,30 @@ public class MainActivity extends AppCompatActivity {
     VideoView videoview;
 
     // Insert your Video URL
+    //String VideoURL = "rtmp://rrbalancer.broadcast.tneg.de:1935/pw/ruk/ruk";
     String VideoURL = "http://www.androidbegin.com/tutorial/AndroidCommercial.3gp";
-    //String VideoURL = "https://fish.schou.me/";
+    //String VideoURL = "https://www.youtube.com/watch?v=dgmhgRD2onM";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*if (!LibsChecker.checkVitamioLibs(this))
+            return;*/
         // Get the layout from video_main.xml
         setContentView(R.layout.activity_main);
         // Find your VideoView in your video_main.xml layout
         videoview = (VideoView) findViewById(R.id.myVideo);
+        // Read URL from intent
+        String urlVideo = getIntent().getStringExtra("url");
+        if (urlVideo.endsWith("mp4") || urlVideo.endsWith("3gp") || urlVideo.endsWith("webm")){
+            VideoURL = urlVideo;
+        }
         // Execute StreamVideo AsyncTask
 
         // Create a progressbar
         pDialog = new ProgressDialog(MainActivity.this);
         // Set progressbar title
-        pDialog.setTitle("Android Video Streaming Tutorial");
+        pDialog.setTitle("Video Streaming");
         // Set progressbar message
         pDialog.setMessage("Buffering...");
         pDialog.setIndeterminate(false);
@@ -46,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
             mediacontroller.setAnchorView(videoview);
             // Get the URL from String VideoURL
             Uri video = Uri.parse(VideoURL);
+            videoview.setVideoPath(VideoURL);
             videoview.setMediaController(mediacontroller);
-            videoview.setVideoURI(video);
 
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
@@ -56,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         videoview.requestFocus();
         videoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            // Close the progress bar and play the video
+            @Override
             public void onPrepared(MediaPlayer mp) {
                 pDialog.dismiss();
                 videoview.start();

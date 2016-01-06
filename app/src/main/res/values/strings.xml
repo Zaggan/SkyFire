@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">A2eApp</string>
+    <string name="prompt_url">Url Video</string>
+    <string name="watch">Watch Video</string>
 </resources>

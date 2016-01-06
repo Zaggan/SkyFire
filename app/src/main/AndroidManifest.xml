@@ -19,6 +19,8 @@
         </activity>
         <activity android:name=".MainActivity">
         </activity>
+        <activity android:name=".Url_Setup">
+        </activity>
     </application>
 
 </manifest>
