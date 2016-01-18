@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/A2eApp.iml" filepath="$PROJECT_DIR$/A2eApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Video_Streaming_A2e.iml" filepath="$PROJECT_DIR$/Video_Streaming_A2e.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

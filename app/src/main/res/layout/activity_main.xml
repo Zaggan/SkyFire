@@ -6,7 +6,7 @@
     android:background="@color/background_screen"
     tools:context=".MainActivity">
 
-    <VideoView
+    <com.itexico.Utils.VideoSurface
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/myVideo"

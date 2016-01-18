@@ -4,5 +4,6 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#448aff</color>
     <color name="background_screen">#303030</color>
+    <color name="dialog_color">#424242</color>
     <color name="disabled_control">#616161</color>
 </resources>

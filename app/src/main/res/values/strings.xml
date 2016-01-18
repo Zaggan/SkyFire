@@ -2,4 +2,11 @@
     <string name="app_name">A2eApp</string>
     <string name="prompt_url">Url Video</string>
     <string name="watch">Watch Video</string>
+    <string name="version">Version:</string>
+    <string name="company">Company:</string>
+    <string name="company_name">Tec A2e S de R.L.de C.V.</string>
+    <string name="product">Product:</string>
+    <string name="product_name">Desarrollo de un Sistema de Seguridad en base a Drones y Cámaras Inalámbricas de Alta Definición</string>
+    <string name="version_value">1.0</string>
+    <string name="about">About</string>
 </resources>

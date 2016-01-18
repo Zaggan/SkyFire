@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity"
+            android:theme="@style/SplashTheme"
             android:screenOrientation="sensorLandscape">
         </activity>
         <activity android:name=".Url_Setup">
