@@ -9,4 +9,11 @@
     <string name="product_name">Desarrollo de un Sistema de Seguridad en base a Drones y Cámaras Inalámbricas de Alta Definición</string>
     <string name="version_value">1.0</string>
     <string name="about">About</string>
+    <string name="button_label">Show Video Info</string>
+    <string name="fps">Frames per Second:</string>
+    <string name="frames_displayed">Frames Displayed:</string>
+    <string name="empty_field">0.0</string>
+    <string name="lost_frames">Lost Frames:</string>
+    <string name="frame_rate">Frame Rate:</string>
+    <string name="fps_value">30</string>
 </resources>

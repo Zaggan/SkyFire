@@ -13,6 +13,7 @@ import com.itexico.a2eapp.R;
 public class ProgressDialog extends Dialog {
 
     private TextView tittle, message;
+    private boolean isCancelled = false;
 
     public ProgressDialog(Context context) {
         super(context);
@@ -40,6 +41,7 @@ public class ProgressDialog extends Dialog {
             public void run() {
                 try {
                     sleep(1500);
+                    setIsCancelled(true);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }finally {
@@ -48,5 +50,13 @@ public class ProgressDialog extends Dialog {
             }
         };
         thread.start();
+    }
+
+    public boolean isCancelled() {
+        return isCancelled;
+    }
+
+    public void setIsCancelled(boolean isCancelled) {
+        this.isCancelled = isCancelled;
     }
 }

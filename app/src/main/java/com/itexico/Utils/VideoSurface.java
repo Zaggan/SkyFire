@@ -8,15 +8,19 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.VideoView;
 
+import com.itexico.Listeners.InfoListener;
+
 /**
  * Created by DarkGeat on 1/14/2016.
  */
 public class VideoSurface extends VideoView {
 
     private long lastTime = 0;
-    private long framesDisplayed = 0;
-    private int framesCount = 0, framesPerSecond = 0, frameRate = 0;
-    private boolean firstTime = true, shouldStop = false;
+    private long framesDisplayed = 0, maxCycles = 5000;
+    private long framesCount = 0, framesPerSecond = 30, frameRate = 0, framesLosed = 0, frameLast = 0;
+    public static volatile boolean shouldStop = false;
+    private boolean firstTime = true;
+    private InfoListener listener;
     private static final String TAG = "VideoSurface";
 
     public VideoSurface(Context context) {
@@ -40,16 +44,15 @@ public class VideoSurface extends VideoView {
         setWillNotDraw(false);
     }
 
-    public static volatile boolean flag = true;
     private Thread calculation;
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        /*if( calculation == null ){
+        if( calculation == null ){
             calculation = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    while ( flag ) {*/
+                    while (!shouldStop) {
                         long currentTime = System.currentTimeMillis();
                         if (firstTime) {
                             lastTime = currentTime;
@@ -58,24 +61,30 @@ public class VideoSurface extends VideoView {
                         framesCount++;
                         if (currentTime - lastTime > 1000) {
                             firstTime = true;
-                            frameRate = framesCount / 60;
+                            if (framesCount > maxCycles){
+                                maxCycles = framesCount;
+                            }
+                            frameRate = framesCount * framesPerSecond / maxCycles;
                             framesDisplayed += frameRate;
+                            if (frameRate < framesPerSecond && frameRate < frameLast){
+                                framesLosed += (framesPerSecond - frameRate);
+                            }
                             framesCount = 0;
-                            Log.w(TAG, "Frames Rate = " + frameRate);
-                            Log.w(TAG, "Frames Displayed = " + framesDisplayed);
+                            frameLast = frameRate;
+                            listener.updatingInfo(frameRate,framesDisplayed,framesLosed);
                         }
-                    //}
-               // }
-            //});
-            //calculation.start();
-        //}
-    }
-
-    public int getFramesPerSecond(){
-        return framesPerSecond;
+                    }
+                }
+            });
+            calculation.start();
+        }
     }
 
     public void setShouldStop(boolean value){
         shouldStop = value;
+    }
+
+    public void setInfoListener(InfoListener infoListener){
+        listener = infoListener;
     }
 }

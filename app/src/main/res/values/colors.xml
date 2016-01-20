@@ -6,4 +6,6 @@
     <color name="background_screen">#303030</color>
     <color name="dialog_color">#424242</color>
     <color name="disabled_control">#616161</color>
+    <color name="black_with_alpha">#2f424242</color>
+    <color name="accent_with_alpha">#2f448aff</color>
 </resources>

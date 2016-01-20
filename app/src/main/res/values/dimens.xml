@@ -3,5 +3,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="enough">8dp</dimen>
+    <dimen name="double_enough">20dp</dimen>
     <dimen name="min_dialog_dimen">400dp</dimen>
 </resources>

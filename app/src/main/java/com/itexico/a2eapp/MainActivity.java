@@ -1,30 +1,36 @@
 package com.itexico.a2eapp;
 
 import android.content.DialogInterface;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
-import android.media.MediaTimestamp;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayout;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.MediaController;
+import android.widget.TextView;
 
+import com.itexico.Listeners.InfoListener;
 import com.itexico.Utils.VideoSurface;
 import com.itexico.dialogs.ProgressDialog;
 
-import java.util.HashMap;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class MainActivity extends AppCompatActivity {
 
     // Declare variables
-    ProgressDialog pDialog;
-    VideoSurface videoview;
-    MediaMetadataRetriever metadataRetriever;
+    private ProgressDialog pDialog;
+    private VideoSurface videoview;
+    private TextView frameRate,frameLost,frameDisplayed;
+    private Button showInfo;
+    private GridLayout gridLayout;
 
     // Insert your Video URL
     String VideoURL = "rtsp://192.168.2.238:8554/main";
-    Uri video;
+    DecimalFormat decimalFormat = new DecimalFormat("###,###,##0");
     //String VideoURL = "http://www.androidbegin.com/tutorial/AndroidCommercial.3gp";
     //String VideoURL = "https://www.youtube.com/watch?v=dgmhgRD2onM";
 
@@ -37,9 +43,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         // Find your VideoView in your video_main.xml layout
         videoview = (VideoSurface) findViewById(R.id.myVideo);
+        // Find the labels for Video Info.
+        frameRate = (TextView) findViewById(R.id.frate);
+        frameLost = (TextView) findViewById(R.id.fLost);
+        frameDisplayed = (TextView) findViewById(R.id.fDisplayed);
+        // Find the button for Info
+        showInfo = (Button) findViewById(R.id.buttonShow);
+        // Find the Layout with Video Info
+        gridLayout = (GridLayout) findViewById(R.id.grid);
         // Read URL from intent
         String urlVideo = getIntent().getStringExtra("url");
-        //if (urlVideo.endsWith("mp4") || urlVideo.endsWith("3gp") || urlVideo.endsWith("webm")){
             VideoURL = urlVideo;
         //}
         // Execute StreamVideo AsyncTask
@@ -53,7 +66,10 @@ public class MainActivity extends AppCompatActivity {
         pDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                //finish();
+                if (pDialog.isCancelled()) {
+                    pDialog.setIsCancelled(false);
+                    finish();
+                }
             }
         });
         // Show progressbar
@@ -63,10 +79,32 @@ public class MainActivity extends AppCompatActivity {
             // Start the MediaController
             MediaController mediacontroller = new MediaController(MainActivity.this);
             mediacontroller.setAnchorView(videoview);
-            // Get the URL from String VideoURL
-            video = Uri.parse(VideoURL);
+            //Set the path to VideoView controller
             videoview.setVideoPath(VideoURL);
             videoview.setMediaController(mediacontroller);
+            videoview.setInfoListener(new InfoListener() {
+                @Override
+                public void updatingInfo(final long FRate, final long FDisplayed, final long FLost) {
+                    frameRate.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            frameRate.setText(decimalFormat.format(FRate));
+                        }
+                    });
+                    frameLost.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            frameLost.setText(decimalFormat.format(FLost));
+                        }
+                    });
+                    frameDisplayed.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            frameDisplayed.setText(decimalFormat.format(FDisplayed));
+                        }
+                    });
+                }
+            });
 
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
@@ -85,14 +123,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        super.onResume();
+        videoview.setShouldStop(false);
         videoview.resume();
+        super.onResume();
     }
 
     @Override
     protected void onStop() {
-        super.onStop();
+        videoview.setShouldStop(true);
         videoview.stopPlayback();
+        super.onStop();
     }
 
     @Override
@@ -103,7 +143,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        videoview.setShouldStop(true);
         videoview.stopPlayback();
         super.onBackPressed();
+    }
+
+    public void InfoTransitionClick(View view){
+        showInfo.setVisibility(showInfo.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+        gridLayout.setVisibility(showInfo.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 }
