@@ -11,7 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Splash"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:screenOrientation="sensorLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,7 +22,8 @@
             android:theme="@style/SplashTheme"
             android:screenOrientation="sensorLandscape">
         </activity>
-        <activity android:name=".Url_Setup">
+        <activity android:name=".Url_Setup"
+            android:screenOrientation="sensorLandscape">
         </activity>
     </application>
 
